@@ -1,0 +1,63 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap_min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Hello, pybo!</title>
+
+    <style>
+        .reply-form{
+            display: none;
+            margin-top : 10px;
+        }
+    </style>
+</head>
+<body>
+<!--책에 있는 버전으로는 동작안함 버전4와5의 차이임
+Bootstrap 5에서는 data-bs-toggle과 data-bs-target으로 변경되었습니다.
+-->
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <a class="navbar-brand" href="{% url 'pybo:index' %}">Pybo</a>
+    <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">로그인</a>
+            </li>
+        </ul>
+    </div>
+</nav>-->
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <a class="navbar-brand" href="{% url 'pybo:index' %}"> Pybo</a>
+    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">로그인</a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+-->
+{% include "navbar.html" %}
+
+{% block content %}
+{% endblock %}
+<script src="{% static 'jquery-3_7_1_min.js' %}"></script>
+<script src="{% static 'bootstrap_min.js' %}"></script>
+{% block script %}
+{% endblock %}
+</body>
+
+
+</html>

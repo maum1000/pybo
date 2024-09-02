@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load pybo_filter %}
+{% block content %}
+<div class = 'container my-3'>
+    <table class="table table-borderless">
+        <thead class="table-dark">
+            <tr class="text-center thead-dark">
+                <th>번호</th>
+                <th>추천</th>
+                <th style="width:50%">제목</th>
+                <th>조회수</th>
+                <th>글쓴이</th>
+                <th>작성일시</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if question_list %}
+            {% for question in question_list %}
+            <tr class="text-center">
+
+                <td>
+                    <!--{{ forloop.counter }}-->
+                    {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1}}
+
+                </td>
+                  <td>
+                    {% if question.voter.all.count > 0 %}
+                        <span class="badge badge-warning px-2 py-1"> {{ question.voter.all.count }} </span>
+                    {% endif %}
+                </td>
+                <td class="text-left">
+                    <a href="{% url 'pybo:detail' question.id %}">
+                        {{ question.subject }}
+                    </a>
+                    <!--templatetag를 만들어서 처리헀음 pybo. templatetag폴더 밑에 소스코드있음-->
+                    {% if question.answer_set|length > 0 %}
+                        <span class="text-danger small ml-2">
+                            {{ question.answer_set.count}}
+                        </span>
+                    {% endif %}
+                </td>
+                <td> {{ question.view_count }} </td>
+                <td>{{ question.author.username }}</td>
+                <td> {{ question.create_date }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">질문이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <!--페이지를 나눕시다 -->
+    <ul class="pagination justify-content-center">
+        {% if question_list.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ question_list.previous_page_number }}>">
+                    이전
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+            </li>
+        {% endif %}
+
+
+        {% with min_page=question_list.number|add:"-5" %}
+        {% with max_page=question_list.number|add:"5" %}
+
+        {% for page_number in question_list.paginator.page_range %}
+            {% if page_number >= min_page and page_number <= max_page %}
+                {% if page_number == question_list.number %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href=">page={{page_number}}">
+                            {{page_number}}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class ='page-item'>
+                        <a class="page-link" href="?page={{page_number}}">
+                            {{page_number}}
+                        </a>
+                    </li>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+        {% endwith %}
+        {% endwith %}
+
+        {% if question_list.has_next %}
+            <li class="page-item">
+                <a class ='page-link' href="?page={{ question_list.next_page_number}}">
+                    다음
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+            </li>
+        {% endif %}
+    </ul>
+
+    <a href=" {% url 'pybo:question_create' %}" class="btn btn-primary">
+        질문 등록하기
+    </a>
+</div>
+{% endblock %}
+
+<!--{% if question_list %}-->
+
+<!--    <ul>-->
+<!--        {% for question in question_list %}-->
+<!--        &lt;!&ndash;<li><a href="/pybo/{{question.id}}/">{{question.subject}}</a></li>&ndash;&gt;-->
+<!--        <li><a href="{% url 'pybo:detail' question.id %}">{{question.subject}}</a></li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+<!--{% else %}-->
+<!--    <p>질문이 없습니다 </p>-->
+<!--{% endif %}-->
